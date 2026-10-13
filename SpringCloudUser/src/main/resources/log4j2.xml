@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Configuration status="info">
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+        </Console>
+        <!-- SQL/JDBC日志输出到此文件 log/datasource -->
+        <RollingFile name="datasource" immediateFlush="true"
+                     fileName="log/datasource/datasource.log"
+                     filePattern="log/datasource/datasource -%d{yyyy-MM-dd HH:mm:ss}.log.gz">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="20 MB"/>
+            </Policies>
+        </RollingFile>
+        <!-- 框架日志输出到此文件 framework.log -->
+        <RollingFile name="framework" immediateFlush="true"
+                     fileName="framework.log"
+                     filePattern="log/framework/framework -%d{yyyy-MM-dd HH:mm:ss}.log.gz">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="20 MB"/>
+            </Policies>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <!-- Spring框架日志 -->
+        <logger name="org.springframework" level="info" additivity="false">
+            <appender-ref ref="framework"/>
+        </logger>
+        <!-- MyBatis SQL日志 -->
+        <!-- ========== MyBatis SQL 全部输出到 datasource 文件 + 控制台 ========== -->
+        <logger name="org.apache.ibatis" level="DEBUG" additivity="false">
+            <appender-ref ref="Console"/>
+            <appender-ref ref="datasource"/>
+        </logger>
+        <!--打印SQL参数、结果集-->
+        <logger name="org.apache.ibatis.logging.jdbc.BaseJdbcLogger" level="DEBUG" additivity="false">
+            <appender-ref ref="datasource"/>
+            <appender-ref ref="Console"/>
+        </logger>
+        <logger name="com.cebbank.springclouduser" level="debug" additivity="false">
+            <appender-ref ref="Console"/>
+            <appender-ref ref="framework"/>
+        </logger>
+<!--        <logger name="com.cebbank.springclouduser.mapper" level="debug" additivity="false">-->
+<!--            <appender-ref ref="Console"/>-->
+<!--            <appender-ref ref="framework"/>-->
+<!--        </logger>-->
+        <Root level="info">
+            <appender-ref ref="Console"/>
+        </Root>
+    </Loggers>
+</Configuration>

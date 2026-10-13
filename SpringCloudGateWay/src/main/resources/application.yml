@@ -1,0 +1,23 @@
+server:
+  port: 8083
+  servlet:
+    context-path: /${spring.application.name}
+spring:
+  application:
+    name: gateway
+  cloud:
+    consul:
+      discovery:
+        heartbeat:
+          enabled: true
+        instance-id: ${spring.application.name}-${spring.cloud.client.ip-address}:${server.port}
+        prefer-ip-address: true
+      host: 127.0.0.1
+      port: 8500
+    gateway:
+      server:
+        webflux:
+          enabled: true
+          discovery:
+            locator:
+              lower-case-service-id: true

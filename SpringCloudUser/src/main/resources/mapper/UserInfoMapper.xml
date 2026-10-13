@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cebbank.springclouduser.mapper.UserInfoMapper">
+    <resultMap id="userInfoMap" type="com.cebbank.springclouduser.bo.UserBo">
+        <result property="id" column="id"/>
+        <result property="userName" column="user_name"/>
+        <result property="mobile" column="mobile"/>
+        <result property="operKey" column="oper_key"/>
+        <result property="workDeptId" column="dept_id"/>
+        <result property="workDeptName" column="dept_name"/>
+        <result property="subBranchId" column="sub_branch_id"/>
+        <result property="subBranchName" column="sub_branch_name"/>
+        <result property="firstBranchName" column="first_branch_name"/>
+        <result property="firstBranchId" column="first_branch_id"/>
+        <result property="addDate" column="add_date"/>
+        <result property="description" column="description"/>
+    </resultMap>
+    <select id="getUserInfoByOperKey" resultMap = "userInfoMap">
+        select * from user_info where oper_key = #{userId}
+    </select>
+</mapper>
